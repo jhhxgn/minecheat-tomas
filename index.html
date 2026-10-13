@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root { --grass:#5b8c2a; --dirt:#7a5230; --dark:#3b2a1a; --stone:#8b8b8b; --sky:#8ecbff; --gold:#f5c542; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Press Start 2P', monospace; background:var(--sky); color:var(--dark); font-size:14px; line-height:1.6; }
+  header { background:var(--grass); border-bottom:8px solid var(--dirt); padding:24px 16px; text-align:center; }
+  h1 { margin:0; font-size:24px; color:#fff; text-shadow:3px 3px 0 var(--dark); }
+  h2 { font-size:16px; margin:0 0 12px; }
+  main { max-width:900px; margin:0 auto; padding:16px; }
+  section { background:#fff; border:4px solid var(--dark); padding:16px; margin-bottom:20px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  button, select { font-family:inherit; font-size:14px; border:4px solid var(--dark); padding:12px; min-height:48px; background:#f3e9d2; color:var(--dark); cursor:pointer; }
+  button:active { transform:translateY(2px); }
+  button.active { background:var(--grass); color:#fff; }
+  .card { border:4px solid var(--dark); background:#e9dcc3; padding:12px; margin-bottom:12px; }
+  .card code { display:block; background:var(--dark); color:#7CFC00; padding:10px; margin:8px 0; word-break:break-all; font-family:inherit; font-size:12px; }
+  .card p { margin:0; font-size:12px; }
+  .row { display:flex; gap:8px; }
+  .row button { flex:1; }
+  .star { flex:0 0 64px; font-size:20px; }
+  .builder { display:grid; gap:12px; }
+  #toast { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:var(--dark); color:#fff; padding:12px 20px; display:none; z-index:9; }
+  .go { background:var(--gold); }
+</style>
+</head>
+<body>
+<header><h1 id="title">Cheat Book</h1></header>
+<main>
+  <section>
+    <h2>Command Builder</h2>
+    <div class="builder">
+      <select id="item" aria-label="Item"></select>
+      <select id="qty" aria-label="Quantity"></select>
+      <code class="card" id="built" style="background:var(--dark);color:#7CFC00;padding:10px;font-size:12px;word-break:break-all"></code>
+      <button class="go" id="copyBuilt">Copy</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Try This</h2>
+    <button class="go" id="random">Surprise Me</button>
+    <div id="randomOut"></div>
+  </section>
+
+  <section>
+    <h2>Commands</h2>
+    <div class="tabs" id="tabs"></div>
+    <div id="list"></div>
+  </section>
+</main>
+<div id="toast">Copied</div>
+
+<script>
+// Change the name here.
+const NAME = "";
+
+// Add new commands here. Bedrock Edition syntax only.
+const COMMANDS = [
+  { cat:"⏰ Time & Weather", cmd:"/time set day", text:"Make it day." },
+  { cat:"⏰ Time & Weather", cmd:"/time set night", text:"Make it night." },
+  { cat:"⏰ Time & Weather", cmd:"/weather clear", text:"Stop the rain." },
+  { cat:"⏰ Time & Weather", cmd:"/weather thunder", text:"Start a storm." },
+  { cat:"🎒 Items", cmd:"/give @s diamond 64", text:"Get 64 diamonds." },
+  { cat:"🎒 Items", cmd:"/give @s diamond_sword", text:"Get a diamond sword." },
+  { cat:"🎒 Items", cmd:"/give @s golden_apple 16", text:"Get 16 golden apples." },
+  { cat:"🎒 Items", cmd:"/give @s elytra", text:"Get wings to fly." },
+  { cat:"🎒 Items", cmd:"/clear @s", text:"Empty your backpack." },
+  { cat:"🐔 Animals", cmd:"/summon chicken", text:"Add a chicken." },
+  { cat:"🐔 Animals", cmd:"/summon pig", text:"Add a pig." },
+  { cat:"🐔 Animals", cmd:"/summon horse", text:"Add a horse to ride." },
+  { cat:"🐔 Animals", cmd:"/summon cat", text:"Add a cat." },
+  { cat:"🐔 Animals", cmd:"/summon parrot", text:"Add a parrot." },
+  { cat:"🦸 Super Powers", cmd:"/gamemode creative", text:"Fly and build with no limits." },
+  { cat:"🦸 Super Powers", cmd:"/gamemode survival", text:"Go back to normal mode." },
+  { cat:"🦸 Super Powers", cmd:"/effect @s night_vision 1000 0 true", text:"See in the dark." },
+  { cat:"🦸 Super Powers", cmd:"/effect @s speed 120 5", text:"Run very fast." },
+  { cat:"🦸 Super Powers", cmd:"/effect @s jump_boost 120 5", text:"Jump very high." },
+  { cat:"🦸 Super Powers", cmd:"/effect @s water_breathing 1000", text:"Breathe under water." },
+  { cat:"🦸 Super Powers", cmd:"/effect @s clear", text:"Remove all effects." },
+  { cat:"🧭 Teleport", cmd:"/tp @s ~ ~50 ~", text:"Go 50 blocks up." },
+  { cat:"🧭 Teleport", cmd:"/tp @s 0 100 0", text:"Go to the center of the world." },
+  { cat:"🧭 Teleport", cmd:"/setworldspawn ~ ~ ~", text:"Set the world start point here." },
+  { cat:"🏗️ Building", cmd:"/setblock ~ ~ ~ diamond_block", text:"Place a diamond block here." },
+  { cat:"🏗️ Building", cmd:"/fill ~ ~ ~ ~5 ~5 ~5 glass", text:"Build a glass cube." },
+  { cat:"🏗️ Building", cmd:"/gamerule keepInventory true", text:"Keep your things when you die." },
+  { cat:"🏗️ Building", cmd:"/difficulty peaceful", text:"No monsters." }
+];
+
+const RANDOM = [
+  { cmd:"/summon chicken", text:"Run it 10 times. Chicken party." },
+  { cmd:"/effect @s jump_boost 60 20", text:"Super jump." },
+  { cmd:"/summon horse", text:"Ride it." },
+  { cmd:"/give @s cake 5", text:"Free cake." },
+  { cmd:"/tp @s ~ ~100 ~", text:"Fall from the sky." },
+  { cmd:"/effect @s speed 60 10", text:"Run like lightning." },
+  { cmd:"/summon parrot", text:"Get a parrot friend." },
+  { cmd:"/weather thunder", text:"Storm time." }
+];
+
+const ITEMS = ["diamond","emerald","gold_ingot","iron_ingot","diamond_sword","diamond_pickaxe","golden_apple","cake","cookie","bread","tnt","torch","oak_planks","cobblestone","bed","elytra","firework_rocket","saddle","name_tag","ender_pearl"];
+const QTYS = [1,2,5,10,16,32,64];
+
+const $ = id => document.getElementById(id);
+let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+let current = "All";
+
+if (NAME) $("title").textContent = NAME + "'s Cheat Book";
+
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.style.display = "block";
+  clearTimeout(toast.id); toast.id = setTimeout(() => t.style.display = "none", 1200);
+}
+
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch {
+    const a = document.createElement("textarea"); a.value = text; document.body.appendChild(a);
+    a.select(); document.execCommand("copy"); a.remove();
+  }
+  toast("Copied");
+}
+
+function saveFavorites() { localStorage.setItem("favorites", JSON.stringify(favorites)); }
+
+function cardHtml(c, withStar) {
+  const fav = favorites.includes(c.cmd);
+  return `<div class="card"><code>${c.cmd}</code><p>${c.text}</p>
+    <div class="row" style="margin-top:8px">
+      <button data-copy="${c.cmd}">Copy</button>
+      ${withStar ? `<button class="star" data-star="${c.cmd}" aria-label="Favorite">${fav ? "★" : "☆"}</button>` : ""}
+    </div></div>`;
+}
+
+function renderTabs() {
+  const cats = ["All", "⭐ Favorites", ...new Set(COMMANDS.map(c => c.cat))];
+  $("tabs").innerHTML = cats.map(c => `<button class="${c === current ? "active" : ""}" data-tab="${c}">${c}</button>`).join("");
+}
+
+function renderList() {
+  let items = COMMANDS;
+  if (current === "⭐ Favorites") items = COMMANDS.filter(c => favorites.includes(c.cmd));
+  else if (current !== "All") items = COMMANDS.filter(c => c.cat === current);
+  $("list").innerHTML = items.length ? items.map(c => cardHtml(c, true)).join("") : "<p>No favorites yet.</p>";
+}
+
+function renderBuilt() { $("built").textContent = `/give @s ${$("item").value} ${$("qty").value}`; }
+
+$("item").innerHTML = ITEMS.map(i => `<option value="${i}">${i.replace(/_/g, " ")}</option>`).join("");
+$("qty").innerHTML = QTYS.map(q => `<option value="${q}" ${q === 64 ? "selected" : ""}>${q}</option>`).join("");
+$("item").onchange = $("qty").onchange = renderBuilt;
+$("copyBuilt").onclick = () => copy($("built").textContent);
+$("random").onclick = () => {
+  const c = RANDOM[Math.floor(Math.random() * RANDOM.length)];
+  $("randomOut").innerHTML = cardHtml(c, false);
+};
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.copy) copy(b.dataset.copy);
+  else if (b.dataset.tab) { current = b.dataset.tab; renderTabs(); renderList(); }
+  else if (b.dataset.star) {
+    const c = b.dataset.star;
+    favorites = favorites.includes(c) ? favorites.filter(f => f !== c) : [...favorites, c];
+    saveFavorites(); renderList();
+  }
+});
+
+renderBuilt(); renderTabs(); renderList();
+</script>
+</body>
+</html>

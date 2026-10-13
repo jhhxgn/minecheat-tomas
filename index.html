@@ -38,7 +38,12 @@
   .star { flex:0 0 64px; font-size:20px; }
   .builder { display:grid; gap:12px; }
   #toast { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); background:var(--dark); color:#fff; padding:12px 20px; display:none; z-index:9; }
-  .go { background:var(--gold); }
+  select { width:100%; max-width:100%; }
+  select, select option { font-size:12px; }
+  header { position:relative; }
+  .langbtn { position:absolute; top:8px; right:8px; min-height:36px; padding:6px 10px; font-size:10px; background:var(--gold); }
+  .go, .card button { background:var(--gold); }
+  .row button.star { flex:0 0 96px; font-size:40px; padding:0; }
   #scare { position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center; background:#c00; color:#fff; font-size:9vw; text-align:center; text-shadow:6px 6px 0 #000; animation:shake .1s infinite, flash .3s infinite alternate; }
   @keyframes shake { 0%{transform:translate(0,0) scale(1)} 25%{transform:translate(-12px,8px) scale(1.05)} 50%{transform:translate(10px,-10px) scale(1)} 75%{transform:translate(-8px,-6px) scale(1.05)} 100%{transform:translate(0,0)} }
   @keyframes flash { from{background:#c00} to{background:#600} }
@@ -46,7 +51,8 @@
 </head>
 <body>
 <header>
-  <h1 id="title">Tomášův Cheat Book</h1>
+  <h1 id="title" data-t>Tomáš's Cheat Book</h1>
+  <button id="lang" class="langbtn"></button>
   <div class="deco">
     <!-- Original pixel art, drawn for this page. -->
     <svg class="pix" viewBox="0 0 8 8" shape-rendering="crispEdges" aria-label="Green face">
@@ -69,55 +75,52 @@
 </header>
 <main>
   <section>
-    <h2>How to Start</h2>
-    <h3 class="g1">Step 1: Turn on cheats</h3>
-    <div class="step"><span class="num">1</span><span>Make a <b>new test world</b>.</span></div>
-    <div class="step"><span class="num">2</span><span>Open the <b>world settings</b>.</span></div>
-    <div class="step"><span class="num">3</span><span>Turn on <b>Activate Cheats</b>.</span></div>
-    <div class="note">Old world? Tap Pause, then Settings, then Game, then Activate Cheats.</div>
+    <h2 data-t>How to Start</h2>
+    <h3 class="g1" data-t>Step 1: Turn on cheats</h3>
+    <div class="step"><span class="num">1</span><span data-t>Make a <b>new test world</b>.</span></div>
+    <div class="step"><span class="num">2</span><span data-t>Open the <b>world settings</b>.</span></div>
+    <div class="step"><span class="num">3</span><span data-t>Turn on <b>Activate Cheats</b>.</span></div>
+    <div class="note" data-t>Old world? Tap Pause, then Settings, then Game, then Activate Cheats.</div>
 
-    <h3 class="g2">Step 2: Open the chat</h3>
-    <div class="step"><span class="num">1</span><span>Play your world.</span></div>
-    <div class="step"><span class="num">2</span><span>Tap the <b>chat bubble</b> at the top.</span></div>
-    <div class="step"><span class="num">3</span><span>Type <b>/</b> and look for the list.</span></div>
-    <div class="note">The list shows? Cheats work!</div>
+    <h3 class="g2" data-t>Step 2: Open the chat</h3>
+    <div class="step"><span class="num">1</span><span data-t>Play your world.</span></div>
+    <div class="step"><span class="num">2</span><span data-t>Tap the <b>chat bubble</b> at the top.</span></div>
+    <div class="step"><span class="num">3</span><span data-t>Type <b>/</b> and look for the list.</span></div>
+    <div class="note" data-t>The list shows? Cheats work!</div>
 
-    <h3 class="g3">Step 3: Use a command</h3>
-    <div class="step"><span class="num">1</span><span>Tap <b>Copy</b> on a card.</span></div>
-    <div class="step"><span class="num">2</span><span>Open the chat in the game.</span></div>
-    <div class="step"><span class="num">3</span><span>Hold the text box. Tap <b>Paste</b>.</span></div>
-    <div class="step"><span class="num">4</span><span>Tap <b>Send</b>.</span></div>
+    <h3 class="g3" data-t>Step 3: Use a command</h3>
+    <div class="step"><span class="num">1</span><span data-t>Tap <b>Copy</b> on a card.</span></div>
+    <div class="step"><span class="num">2</span><span data-t>Open the chat in the game.</span></div>
+    <div class="step"><span class="num">3</span><span data-t>Hold the text box. Tap <b>Paste</b>.</span></div>
+    <div class="step"><span class="num">4</span><span data-t>Tap <b>Send</b>.</span></div>
   </section>
 
   <section>
-    <h2>Command Builder</h2>
+    <h2 data-t>Command Builder</h2>
     <div class="builder">
       <select id="item" aria-label="Item"></select>
       <select id="qty" aria-label="Quantity"></select>
       <code class="card" id="built" style="background:var(--dark);color:#7CFC00;padding:10px;font-size:12px;word-break:break-all"></code>
-      <button class="go" id="copyBuilt">Copy</button>
+      <button class="go" id="copyBuilt" data-t>Copy</button>
     </div>
   </section>
 
   <section>
-    <h2>Try This</h2>
-    <button class="go" id="random">Surprise Me</button>
+    <h2 data-t>Try This</h2>
+    <button class="go" id="random" data-t>Surprise Me</button>
     <div id="randomOut"></div>
   </section>
 
   <section>
-    <h2>Commands</h2>
+    <h2 data-t>Commands</h2>
     <div class="tabs" id="tabs"></div>
     <div id="list"></div>
   </section>
 </main>
 <div id="toast">Copied</div>
-<div id="scare" onclick="this.style.display='none'">CHEATER!</div>
+<div id="scare" data-t onclick="this.style.display='none'">CHEATER!</div>
 
 <script>
-// Change the name here.
-const NAME = "";
-
 // Add new commands here. Bedrock Edition syntax only.
 const COMMANDS = [
   { cat:"Game Mode", cmd:"/gamemode creative", text:"You are a superhero! Fly up and build anything." },
@@ -168,7 +171,93 @@ const $ = id => document.getElementById(id);
 let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 let current = "All";
 
-if (NAME) $("title").textContent = NAME + "'s Cheat Book";
+let lang = "en";
+const CS = {
+  "Tomáš's Cheat Book":"Tomášův Cheat Book",
+  "How to Start":"Jak začít",
+  "Step 1: Turn on cheats":"Krok 1: Zapni cheaty",
+  "Step 2: Open the chat":"Krok 2: Otevři chat",
+  "Step 3: Use a command":"Krok 3: Použij příkaz",
+  "Make a <b>new test world</b>.":"Vytvoř <b>nový testovací svět</b>.",
+  "Open the <b>world settings</b>.":"Otevři <b>nastavení světa</b>.",
+  "Turn on <b>Activate Cheats</b>.":"Zapni <b>Aktivovat cheaty</b>.",
+  "Old world? Tap Pause, then Settings, then Game, then Activate Cheats.":"Starý svět? Klepni na Pauzu, pak Nastavení, pak Hra, pak Aktivovat cheaty.",
+  "Play your world.":"Spusť svůj svět.",
+  "Tap the <b>chat bubble</b> at the top.":"Klepni nahoře na <b>bublinu chatu</b>.",
+  "Type <b>/</b> and look for the list.":"Napiš <b>/</b> a hledej seznam.",
+  "The list shows? Cheats work!":"Seznam se ukázal? Cheaty fungují!",
+  "Tap <b>Copy</b> on a card.":"Klepni na kartě na <b>Kopírovat</b>.",
+  "Open the chat in the game.":"Otevři chat ve hře.",
+  "Hold the text box. Tap <b>Paste</b>.":"Podrž prst na textovém poli. Klepni na <b>Vložit</b>.",
+  "Tap <b>Send</b>.":"Klepni na <b>Odeslat</b>.",
+  "Command Builder":"Tvůrce příkazů",
+  "Try This":"Vyzkoušej",
+  "Commands":"Příkazy",
+  "Surprise Me":"Překvap mě",
+  "Copy":"Kopírovat",
+  "Copied":"Zkopírováno",
+  "CHEATER!":"PODVODNÍK!",
+  "No favorites yet.":"Zatím žádné oblíbené.",
+  "All":"Vše",
+  "Favorites":"Oblíbené",
+  "Game Mode":"Herní režim",
+  "Time & Weather":"Čas a počasí",
+  "Items":"Předměty",
+  "Animals":"Zvířata",
+  "Super Powers":"Superschopnosti",
+  "Teleport":"Teleport",
+  "Building":"Stavění",
+  "You are a superhero! Fly up and build anything.":"Jsi superhrdina! Leť nahoru a postav cokoliv.",
+  "Back to normal. Time to find food and fight!":"Zpátky do normálu. Čas najít jídlo a bojovat!",
+  "The sun comes up! No more scary dark.":"Vychází slunce! Už žádná strašidelná tma.",
+  "Stars and moon! Good for spooky fun.":"Hvězdy a měsíc! Skvělé na strašidelnou zábavu.",
+  "Bye bye rain! Blue sky again.":"Ahoj, deště! Zase je modrá obloha.",
+  "BOOM! Thunder and lightning!":"BUM! Hrom a blesk!",
+  "A giant pile of shiny diamonds. You are rich!":"Obří hromada lesklých diamantů. Jsi bohatý!",
+  "A super strong sword for fighting monsters.":"Supersilný meč na boj s příšerami.",
+  "Yummy gold apples. They make you strong!":"Mňam, zlatá jablka. Dodají ti sílu!",
+  "Wings! Jump off a tall tower and glide like a bird.":"Křídla! Skoč z vysoké věže a plachti jako pták.",
+  "Shake out your backpack. Everything is gone!":"Vysyp si batoh. Všechno je pryč!",
+  "Bawk bawk! A chicken pops out.":"Kokodák! Objevila se slepice.",
+  "Oink oink! A pink pig is here.":"Chrum chrum! Je tu růžové prasátko.",
+  "A horse for you! Hop on and gallop.":"Kůň pro tebe! Naskoč a cválej.",
+  "Meow! A cute cat to be your friend.":"Mňau! Roztomilá kočka bude tvůj kamarád.",
+  "A colorful parrot. It can sit on your shoulder!":"Barevný papoušek. Může ti sedět na rameni!",
+  "Owl eyes! Caves look bright like day.":"Sovie oči! Jeskyně svítí jako ve dne.",
+  "Zoom zoom! You run like lightning.":"Fííí! Běžíš jako blesk.",
+  "Boing! You jump like a frog, up to the clouds.":"Bum! Skáčeš jako žába, až do oblak.",
+  "Be a fish! Swim and breathe under the sea.":"Buď rybou! Plav a dýchej pod vodou.",
+  "Poof! All magic powers go away.":"Čmuk! Všechny kouzelné síly zmizí.",
+  "Whoosh! You fly high into the sky.":"Fuj! Letíš vysoko do nebe.",
+  "Magic jump to the middle of the world!":"Kouzelný skok do středu světa!",
+  "This spot is now your home. You come back here.":"Toto místo je teď tvůj domov. Vrátíš se sem.",
+  "A big shiny diamond block appears!":"Objeví se velký lesklý diamantový blok!",
+  "A see-through glass box. Build a fish tank!":"Průhledná skleněná krabice. Postav akvárium!",
+  "Oops, you died? You keep all your stuff!":"Ups, zemřel jsi? Všechny věci si necháš!",
+  "No more zombies! Everything is peaceful.":"Žádní zombie! Všude je klid.",
+  "Do it 10 times. Chicken party!":"Udělej to 10krát. Slepičí párty!",
+  "Giant jump! Try to touch the clouds.":"Obří skok! Zkus se dotknout oblak.",
+  "A horse! Hop on and ride.":"Kůň! Naskoč a jeď.",
+  "Yum! 5 free cakes for you.":"Mňam! 5 dortů zdarma pro tebe.",
+  "Up you go! Then fall down. Be careful!":"Nahoru! A pak dolů. Pozor!",
+  "So fast. Race your friends!":"Tak rychlé. Závoď s kamarády!",
+  "A new bird friend says hello!":"Nový ptačí kamarád tě zdraví!",
+  "Dark clouds, big thunder. So exciting!":"Tmavé mraky, velký hrom. Tak napínavé!"
+};
+const tr = k => lang === "cs" ? (CS[k] || k) : k;
+let lastRandom = null;
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    el.dataset.en = el.dataset.en || el.innerHTML;
+    el.innerHTML = tr(el.dataset.en);
+  });
+  $("lang").textContent = lang === "en" ? "Česky" : "English";
+  renderTabs(); renderList();
+  $("randomOut").innerHTML = lastRandom ? cardHtml(lastRandom, false) : "";
+}
+
 
 function toast(msg) {
   const t = $("toast"); t.textContent = msg; t.style.display = "block";
@@ -181,7 +270,7 @@ async function copy(text) {
     const a = document.createElement("textarea"); a.value = text; document.body.appendChild(a);
     a.select(); document.execCommand("copy"); a.remove();
   }
-  toast("Copied");
+  toast(tr("Copied"));
   if (scareCount < MAX_SCARES && ++copyCount >= COPY_LIMIT) { copyCount = 0; scareCount++; jumpscare(); }
 }
 
@@ -212,23 +301,23 @@ function saveFavorites() { localStorage.setItem("favorites", JSON.stringify(favo
 
 function cardHtml(c, withStar) {
   const fav = favorites.includes(c.cmd);
-  return `<div class="card"><code>${c.cmd}</code><p>${c.text}</p>
+  return `<div class="card"><code>${c.cmd}</code><p>${tr(c.text)}</p>
     <div class="row" style="margin-top:8px">
-      <button data-copy="${c.cmd}">Copy</button>
+      <button data-copy="${c.cmd}">${tr("Copy")}</button>
       ${withStar ? `<button class="star" data-star="${c.cmd}" aria-label="Favorite">${fav ? "★" : "☆"}</button>` : ""}
     </div></div>`;
 }
 
 function renderTabs() {
   const cats = ["All", "Favorites", ...new Set(COMMANDS.map(c => c.cat))];
-  $("tabs").innerHTML = cats.map(c => `<button class="${c === current ? "active" : ""}" data-tab="${c}">${c}</button>`).join("");
+  $("tabs").innerHTML = cats.map(c => `<button class="${c === current ? "active" : ""}" data-tab="${c}">${tr(c)}</button>`).join("");
 }
 
 function renderList() {
   let items = COMMANDS;
   if (current === "Favorites") items = COMMANDS.filter(c => favorites.includes(c.cmd));
   else if (current !== "All") items = COMMANDS.filter(c => c.cat === current);
-  $("list").innerHTML = items.length ? items.map(c => cardHtml(c, true)).join("") : "<p>No favorites yet.</p>";
+  $("list").innerHTML = items.length ? items.map(c => cardHtml(c, true)).join("") : `<p>${tr("No favorites yet.")}</p>`;
 }
 
 function renderBuilt() { $("built").textContent = `/give @s ${$("item").value} ${$("qty").value}`; }
@@ -236,10 +325,11 @@ function renderBuilt() { $("built").textContent = `/give @s ${$("item").value} $
 $("item").innerHTML = ITEMS.map(i => `<option value="${i}">${i.replace(/_/g, " ")}</option>`).join("");
 $("qty").innerHTML = QTYS.map(q => `<option value="${q}" ${q === 64 ? "selected" : ""}>${q}</option>`).join("");
 $("item").onchange = $("qty").onchange = renderBuilt;
+$("lang").onclick = () => { lang = lang === "en" ? "cs" : "en"; applyLang(); };
 $("copyBuilt").onclick = () => copy($("built").textContent);
 $("random").onclick = () => {
-  const c = RANDOM[Math.floor(Math.random() * RANDOM.length)];
-  $("randomOut").innerHTML = cardHtml(c, false);
+  lastRandom = RANDOM[Math.floor(Math.random() * RANDOM.length)];
+  $("randomOut").innerHTML = cardHtml(lastRandom, false);
 };
 
 document.addEventListener("click", e => {
@@ -253,7 +343,7 @@ document.addEventListener("click", e => {
   }
 });
 
-renderBuilt(); renderTabs(); renderList();
+renderBuilt(); applyLang();
 </script>
 </body>
 </html>
